@@ -1,0 +1,112 @@
+*transliterate.txt*   Transliterate text
+
+Author: Fanael Linithien <fanael4@gmail.com>
+License: 3-clause BSD license, see transliterate.vim for details
+Version: 0.1
+
+=======================================================================
+Contents                       *transliterate* *transliterate-contents*
+
+        1. Requirements .................. |transliterate-requirements|
+        2. Installation .................. |transliterate-installation|
+        3. Configuration ................. |transliterate-configuration|
+        4. Usage ......................... |transliterate-usage|
+        5. Known issues .................. |transliterate-issues|
+        6. Todo .......................... |transliterate-todo|
+
+=======================================================================
+1. Requirements                            *transliterate-requirements*
+
+There's only one requirement: Vim. The required version is a unknown
+to me, it certainly works with Vim 7.3.
+
+Reports about whether the plugin works with older Vim versions would
+be appreciated.
+
+=======================================================================
+2. Installation                            *transliterate-installation*
+
+To install:
+  - Download the plugin archive.
+  - Extract the archive into the runtime directory.
+  - Generate the help tags (optional).
+  - Set the key mapping in your vimrc.
+
+=======================================================================
+3. Configuration                          *transliterate-configuration*
+
+                                                   *g:transliterateKey*
+g:transliterateKey~
+Default: doesn't exist
+
+The key used to trigger transliteration. If you don't want the plugin
+to print error messages every time you start vim, set it to some value.
+
+Example:
+>
+        let g:transliterateKey = '<F2>'
+<
+                                                  *g:transliterateMode*
+g:transliterateMode~
+Default: "identity"
+
+The transliteration mode. Determines what will be replaced by what.
+The currently supported modes are:
+  * identity: does nothing
+  * xsampa: transforms X-SAMPA into IPA
+  * x-sampa: ditto
+
+Example:
+>
+        let g:transliterateMode = 'xsampa'
+<
+                                      *g:transliterateDontUseDoubleKey*
+g:transliterateDontUseDoubleKey~
+Default: doesn't exist
+
+If the variable exists (its value is ignored), no normal mode mapping
+will be created for hitting |g:transliterateKey| twice.
+
+Example:
+>
+        let g:transliterateDontUseDoubleKey = 'this value is ignored'
+<
+
+=======================================================================
+4. Usage                                          *transliterate-usage*
+
+To make the plugin transliterate some text, press the transliteration
+key (|g:transliterateKey|) in normal or visual mode.
+
+In normal mode, the transliteration key accepts any |motion|, so for
+example (assuming the transliteration key is <F2>)
+>
+        <F2>iW
+<
+will transliterate the inner WORD according to current mode
+(see |g:transliterateMode|).
+
+In visual mode, pressing transliteration key will transliterate
+the selection.
+
+In short: the transliteration key works like any other verb
+in vim editing language.
+
+=======================================================================
+5. Known issues                                  *transliterate-issues*
+
+The plugin is slow. Really slow. It's written in pure vim script,
+and vim script is hardly a speed demon. That said, it's fast enough
+for typical usage, just don't try to transliterate a whole big file.
+
+=======================================================================
+6. Todo                                            *transliterate-todo*
+
+ - Support for Cyrillic (very important)
+ - And for kanas
+ - And for pinyin
+ - Reverse detransliteration
+ - User-defined transliteration modes
+
+=======================================================================
+vim: tw=78 sw=4 et ft=help

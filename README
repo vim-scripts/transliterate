@@ -1,0 +1,6 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=4200
+
+This plugin allows transforming one set of symbols into another.
+Currently the only supported transformation is transforming X-SAMPA into IPA.
+
+Mercurial repository on Bitbucket: https://bitbucket.org/Fanael/vim-transliterate
