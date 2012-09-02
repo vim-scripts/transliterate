@@ -2,7 +2,7 @@
 
 Author: Fanael Linithien <fanael4@gmail.com>
 License: 3-clause BSD license, see transliterate.vim for details
-Version: 0.1
+Version: 0.2
 
 =======================================================================
 Contents                       *transliterate* *transliterate-contents*
@@ -30,60 +30,78 @@ To install:
   - Download the plugin archive.
   - Extract the archive into the runtime directory.
   - Generate the help tags (optional).
-  - Set the key mapping in your vimrc.
 
 =======================================================================
 3. Configuration                          *transliterate-configuration*
 
-                                                   *g:transliterateKey*
-g:transliterateKey~
-Default: doesn't exist
-
-The key used to trigger transliteration. If you don't want the plugin
-to print error messages every time you start vim, set it to some value.
-
-Example:
->
-        let g:transliterateKey = '<F2>'
-<
                                                   *g:transliterateMode*
 g:transliterateMode~
 Default: "identity"
 
 The transliteration mode. Determines what will be replaced by what.
-The currently supported modes are:
+Currently supported modes are:
   * identity: does nothing
   * xsampa: transforms X-SAMPA into IPA
   * x-sampa: ditto
+  * any user-defined modes, see |TransliterateAddMode()|
+    and |TransliterateForceMode()|.
 
-Example:
->
+Example: >
         let g:transliterateMode = 'xsampa'
 <
-                                      *g:transliterateDontUseDoubleKey*
-g:transliterateDontUseDoubleKey~
-Default: doesn't exist
+                                             *<Plug>TransliterateApply*
+<Plug>TransliterateApply~
 
-If the variable exists (its value is ignored), no normal mode mapping
-will be created for hitting |g:transliterateKey| twice.
+Normal- and visual mode |<Plug>| mapping that invokes the
+transliteration procedure. To use it, map it to something more
+accessible with |nmap| and/or |vmap| (no, |noremap| won't work).
 
-Example:
->
-        let g:transliterateDontUseDoubleKey = 'this value is ignored'
+Example: >
+        nmap <F2> <Plug>TransliterateApply
+        vmap <F2> <Plug>TransliterateApply
 <
+
+                                               *TransliterateAddMode()*
+TransliterateAddMode({modeName}, {modeTable})
+
+Add a custom transliteration mode {modeName}. {modeTable} should be
+a list of two-element lists, where the first element is the string
+to be searched for and the second element is the string to replace
+the first one with.
+
+If a mode {modeName} already exists, an error occurs.
+
+Example: >
+        call TransliterateAddMode('foo', [['X', 'y'], ['foo', 'bar']])
+<
+
+                                             *TransliterateForceMode()*
+TransliterateForceMode({modeName}, {modeTable})
+
+The same as |TransliterateAddMode()|, except it silently overwrites
+the mode if a name clash occurs.
+
+                                               *TransliterateHasMode()*
+TransliterateHasMode({modeName})
+
+1 if mode {modeName} exists, 0 otherwise.
+
+                                            *TransliterateRemoveMode()*
+TransliterateRemoveMode({modeName})
+
+Remove the transliterate mode {modeName}. Nothing happens if there's
+no such mode.
 
 =======================================================================
 4. Usage                                          *transliterate-usage*
 
-To make the plugin transliterate some text, press the transliteration
-key (|g:transliterateKey|) in normal or visual mode.
+To make the plugin transliterate some text, press the key you mapped
+'<Plug>TransliterateApply' to in normal or visual mode.
 
 In normal mode, the transliteration key accepts any |motion|, so for
-example (assuming the transliteration key is <F2>)
->
+example (assuming the transliteration key is <F2>) >
         <F2>iW
-<
-will transliterate the inner WORD according to current mode
+<will transliterate the inner WORD according to current mode
 (see |g:transliterateMode|).
 
 In visual mode, pressing transliteration key will transliterate
@@ -91,6 +109,10 @@ the selection.
 
 In short: the transliteration key works like any other verb
 in vim editing language.
+
+
+To add a custom mode, use |TransliterateAddMode()| or
+|TransliterateForceMode()|.
 
 =======================================================================
 5. Known issues                                  *transliterate-issues*
@@ -106,7 +128,6 @@ for typical usage, just don't try to transliterate a whole big file.
  - And for kanas
  - And for pinyin
  - Reverse detransliteration
- - User-defined transliteration modes
 
 =======================================================================
-vim: tw=78 sw=4 et ft=help
+vim: tw=72 sw=4 et ft=help

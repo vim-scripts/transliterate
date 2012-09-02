@@ -1,7 +1,9 @@
 " ============================================================================
+" vim: set fdm=marker fdl=0:
+"
 " File: transliterate.vim
 " Author: Fanael Linithien <fanael4@gmail.com>
-" Version: 0.1
+" Version: 0.2
 " Description: vim plugin that allows transliteration of text
 " License: Copyright (c) 2012, Fanael Linithien
 " All rights reserved.
@@ -28,6 +30,8 @@
 " OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 " ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+" Initialization {{{
+
 scriptencoding utf-8
 
 if &compatible
@@ -38,12 +42,12 @@ endif
 if !exists('g:transliterateMode')
   let g:transliterateMode='identity'
 endif
-if !exists('g:transliterateKey')
-  echoerr 'The variable g:transliterateKey not set, Transliterate won''t work'
-  finish
-endif
 
-let s:xsampaLayout = [
+" }}}
+
+" Built-in replacement tables {{{
+
+let s:xsampaMode = [
 \ ['b_<', 'ɓ'], ['d`', 'ɖ'], ['d_<', 'ɗ'], ['g_<', 'ɠ'], ['h\', 'ɦ'],
 \ ['j\', 'ʝ'], ['l`', 'ɭ'], ['l\', 'ɺ'], ['n`', 'ɳ'], ['p\', 'ɸ'],
 \ ['r`', 'ɽ'], ['r\`', 'ɻ'], ['r\', 'ɹ'], ['s`', 'ʂ'], ['s\', 'ɕ'],
@@ -75,20 +79,38 @@ let s:xsampaLayout = [
 \ ['_w', 'ʷ'], ['_X', '̆'], ['_x', '̽'], ['-', '']
 \]
 
-let s:layouts = {
+let s:modes = {
 \ 'identity': [],
-\ 'xsampa': s:xsampaLayout,
-\ 'x-sampa': s:xsampaLayout,
+\ 'xsampa': s:xsampaMode,
+\ 'x-sampa': s:xsampaMode,
 \}
 
-function! s:TransliterateReplace(text, layoutTable)
+" }}}
+
+" Internal functions {{{
+
+function! s:Comparator(a, b)
+  let strA = a:a[0]
+  let strB = a:b[0]
+  let lenA = len(strA)
+  let lenB = len(strB)
+  return (lenA !=# lenB) ? (lenA <# lenB) : (strA <# strB)
+endfunction
+
+function! s:TransliteratePrepareModeTable(modeTable)
+  let modeTable = deepcopy(a:modeTable)
+  call sort(modeTable, 's:Comparator')
+  return modeTable
+endfunction
+
+function! s:TransliterateReplace(text, modeTable)
   let result = ''
   let i = 0
   let textLength = len(a:text)
 
   while i < textLength
     let replaced = 0
-    for [str, replacement] in a:layoutTable
+    for [str, replacement] in a:modeTable
       let strLen = len(str)
       if a:text[i : i + strLen - 1] ==# str
         let result .= replacement
@@ -108,12 +130,12 @@ endfunction
 
 function! s:TransliterateWork(text)
   try
-    let layoutTable = s:layouts[g:transliterateMode]
+    let modeTable = s:modes[g:transliterateMode]
   catch
     echoerr 'Invalid Transliterate mode (' . g:transliterateMode . '), not doing anything.'
   endtry
 
-  return s:TransliterateReplace(a:text, layoutTable)
+  return s:TransliterateReplace(a:text, modeTable)
 endfunction
 
 function! <SID>TransliterateOperator(type)
@@ -134,8 +156,33 @@ function! <SID>TransliterateOperator(type)
   endtry
 endfunction
 
-execute 'nnoremap ' . g:transliterateKey . ' :set operatorfunc=<SID>TransliterateOperator<CR>g@'
-execute 'vnoremap ' . g:transliterateKey . ' :<C-u>call <SID>TransliterateOperator(visualmode())<CR>'
-if !exists('g:transliterateDontUseDoubleKey')
-  execute 'nnoremap' . g:transliterateKey . g:transliterateKey . ' 0:set operatorfunc=<SID>TransliterateOperator<CR>g@$'
-endif
+" }}}
+
+" Public stuff {{{
+
+function! TransliterateAddMode(name, modeTable)
+  if has_key(s:modes, a:name)
+    echoerr 'Transliterate mode ''' . a:name . ''' already exists.'
+  else
+    let s:modes[a:name] = s:TransliteratePrepareModeTable(a:modeTable)
+  endif
+endfunction
+
+function! TransliterateForceMode(name, modeTable)
+  let s:modes[a:name] = s:TransliteratePrepareModeTable(a:modeTable)
+endfunction
+
+function! TransliterateHasMode(name)
+  return has_key(s:modes, a:name)
+endfunction
+
+function! TransliterateRemoveMode(name)
+  if has_key(s:modes, a:name)
+    call remove(s:modes, a:name)
+  endif
+endfunction
+
+nnoremap <unique> <Plug>TransliterateApply :set operatorfunc=<SID>TransliterateOperator<CR>g@
+vnoremap <unique> <Plug>TransliterateApply :<C-u>call <SID>TransliterateOperator(visualmode())<CR>
+
+" }}}
