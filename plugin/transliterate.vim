@@ -3,7 +3,7 @@
 "
 " File: transliterate.vim
 " Author: Fanael Linithien <fanael4@gmail.com>
-" Version: 0.2.1
+" Version: 0.2.2
 " Description: vim plugin that allows transliteration of text
 " License: Copyright (c) 2012, Fanael Linithien
 " All rights reserved.
@@ -86,10 +86,32 @@ let s:xsampaMode = [
 \ ['\V&', 'ɶ'], ['\V%', 'ˌ'], ['\V"', 'ˈ'], ['\V!', 'ꜜ']
 \]
 
+let s:ruscyrMode = [
+\ ['\Vshch', 'щ'], ['\VShch', 'Щ'], ['\Vzh', 'ж'], ['\Vts', 'ц'],
+\ ['\Vsh', 'ш'], ['\Vkh', 'х'], ['\Vyu', 'ю'], ['\Vyo', 'ё'],
+\ ['\Vye', 'э'], ['\Vya', 'я'], ['\Vch', 'ч'], ['\VZh', 'Ж'],
+\ ['\VTs', 'Ц'], ['\VSh', 'Ш'], ['\VKh', 'Х'], ['\VYu', 'Ю'],
+\ ['\VYo', 'Ё'], ['\VYe', 'Э'], ['\VYa', 'Я'], ['\VCh', 'Ч'],
+\ ['\Vz', 'з'], ['\Vy', 'ы'], ['\Vx', 'х'], ['\Vv', 'в'],
+\ ['\Vu', 'у'], ['\Vt', 'т'], ['\Vs', 'с'], ['\Vr', 'р'],
+\ ['\Vp', 'п'], ['\Vo', 'о'], ['\Vn', 'н'], ['\Vm', 'м'],
+\ ['\Vl', 'л'], ['\Vk', 'к'], ['\Vj', 'й'], ['\Vi', 'и'],
+\ ['\Vh', 'Х'], ['\Vh', 'х'], ['\Vg', 'г'], ['\Vf', 'ф'],
+\ ['\Ve', 'е'], ['\Vd', 'д'], ['\Vb', 'б'], ['\Va', 'а'],
+\ ['\VZ', 'З'], ['\VY', 'Ы'], ['\VX', 'Х'], ['\VV', 'В'],
+\ ['\VU', 'У'], ['\VT', 'Т'], ['\VS', 'С'], ['\VR', 'Р'],
+\ ['\VP', 'П'], ['\VO', 'О'], ['\VN', 'Н'], ['\VM', 'М'],
+\ ['\VL', 'Л'], ['\VK', 'К'], ['\VJ', 'Й'], ['\VI', 'И'],
+\ ['\VG', 'Г'], ['\VF', 'Ф'], ['\VE', 'Е'], ['\VD', 'Д'],
+\ ['\VB', 'Б'], ['\VA', 'А'], ['\V''', 'ь'], ['\V"', 'ъ']
+\]
+
 let s:modes = {
 \ 'identity': [],
 \ 'xsampa': s:xsampaMode,
 \ 'x-sampa': s:xsampaMode,
+\ 'ruscyr': s:ruscyrMode,
+\ 'russian': s:ruscyrMode
 \}
 
 " }}}
@@ -184,6 +206,10 @@ function! TransliterateRemoveMode(name)
   if has_key(s:modes, a:name)
     call remove(s:modes, a:name)
   endif
+endfunction
+
+function! TransliterateGetModeNames()
+  return keys(s:modes)
 endfunction
 
 nnoremap <unique> <Plug>TransliterateApply :set operatorfunc=<SID>TransliterateOperator<CR>g@

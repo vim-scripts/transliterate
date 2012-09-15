@@ -2,10 +2,11 @@
 
 Author: Fanael Linithien <fanael4@gmail.com>
 License: 3-clause BSD license, see transliterate.vim for details
-Version: 0.2.1
+Version: 0.2.2
 
 =======================================================================
-Contents                       *transliterate* *transliterate-contents*
+                                                        *transliterate*
+Contents                                       *transliterate-contents*
 
         1. Requirements .................. |transliterate-requirements|
         2. Installation .................. |transliterate-installation|
@@ -34,6 +35,7 @@ To install:
 =======================================================================
 3. Configuration                          *transliterate-configuration*
 
+                                                    *transliterateMode*
                                                   *g:transliterateMode*
 g:transliterateMode~
 Default: "identity"
@@ -43,6 +45,9 @@ Currently supported modes are:
   * identity: does nothing
   * xsampa: transforms X-SAMPA into IPA
   * x-sampa: ditto
+  * russian: pseudo-English to Russian Cyrillic. Hard yer is ", soft
+    yer is '
+  * ruscyr: ditto
   * any user-defined modes, see |TransliterateAddMode()|
     and |TransliterateForceMode()|.
 
@@ -92,6 +97,11 @@ TransliterateRemoveMode({modeName})
 Remove the transliterate mode {modeName}. Nothing happens if there's
 no such mode.
 
+                                          *TransliterateGetModeNames()*
+TransliterateGetModeNames()
+
+Return the list of names of the registered modes.
+
 =======================================================================
 4. Usage                                          *transliterate-usage*
 
@@ -124,10 +134,10 @@ for typical usage, just don't try to transliterate a whole big file.
 =======================================================================
 6. Todo                                            *transliterate-todo*
 
- - Support for Cyrillic (very important)
+ - Support for more Cyrillics
  - And for kanas
  - And for pinyin
- - Reverse detransliteration
+ - Reverse transliteration
 
 =======================================================================
 vim: tw=72 sw=4 et ft=help
