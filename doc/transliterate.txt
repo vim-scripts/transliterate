@@ -2,7 +2,7 @@
 
 Author: Fanael Linithien <fanael4@gmail.com>
 License: 3-clause BSD license, see transliterate.vim for details
-Version: 0.2
+Version: 0.2.1
 
 =======================================================================
 Contents                       *transliterate* *transliterate-contents*
