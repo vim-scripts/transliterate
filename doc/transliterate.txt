@@ -2,7 +2,7 @@
 
 Author: Fanael Linithien <fanael4@gmail.com>
 License: 3-clause BSD license, see transliterate.vim for details
-Version: 0.2.2
+Version: 0.2.2.1
 
 =======================================================================
                                                         *transliterate*
@@ -12,8 +12,9 @@ Contents                                       *transliterate-contents*
         2. Installation .................. |transliterate-installation|
         3. Configuration ................. |transliterate-configuration|
         4. Usage ......................... |transliterate-usage|
-        5. Known issues .................. |transliterate-issues|
-        6. Todo .......................... |transliterate-todo|
+        5. Built-in modes ................ |transliterate-builtin-modes|
+        6. Known issues .................. |transliterate-issues|
+        7. Todo .......................... |transliterate-todo|
 
 =======================================================================
 1. Requirements                            *transliterate-requirements*
@@ -41,15 +42,7 @@ g:transliterateMode~
 Default: "identity"
 
 The transliteration mode. Determines what will be replaced by what.
-Currently supported modes are:
-  * identity: does nothing
-  * xsampa: transforms X-SAMPA into IPA
-  * x-sampa: ditto
-  * russian: pseudo-English to Russian Cyrillic. Hard yer is ", soft
-    yer is '
-  * ruscyr: ditto
-  * any user-defined modes, see |TransliterateAddMode()|
-    and |TransliterateForceMode()|.
+See |transliterate-builtin-modes| for the list of built-in modes.
 
 Example: >
         let g:transliterateMode = 'xsampa'
@@ -125,14 +118,96 @@ To add a custom mode, use |TransliterateAddMode()| or
 |TransliterateForceMode()|.
 
 =======================================================================
-5. Known issues                                  *transliterate-issues*
+5. Built-in modes                         *transliterate-builtin-modes*
+
+* identity:                               *transliterate-mode-identity*
+    Performs no substitutions.
+
+                                           *transliterate-mode-x-sampa*
+* xsampa, x-sampa:                          *transliterate-mode-xsampa*
+   Transforms X-SAMPA to IPA.
+
+                                            *transliterate-mode-ruscyr*
+* russian, ruscyr:                         *transliterate-mode-russian*
+    Transforms pseudo-English to Russian. The exact substitution map:
+        - " => ъ
+        - ' => ь
+        - A => А
+        - B => Б
+        - Ch => Ч
+        - D => Д
+        - E => Е
+        - F => Ф
+        - G => Г
+        - H => Х   
+        - I => И
+        - J => Й
+        - K => К
+        - Kh => Х
+        - L => Л 
+        - M => М
+        - N => Н
+        - O => О
+        - P => П 
+        - R => Р
+        - S => С
+        - Sh => Ш
+        - Shch => Щ
+        - T => Т
+        - Ts => Ц
+        - U => У
+        - V => В
+        - X => Х
+        - Y => Ы
+        - Ya => Я
+        - Ye => Э
+        - Yo => Ё
+        - Yu => Ю
+        - Z => З
+        - Zh => Ж
+        - a => а
+        - b => б
+        - ch => ч
+        - d => д
+        - e => е
+        - f => ф
+        - g => г
+        - h => х
+        - i => и
+        - j => й
+        - k => к
+        - kh => х
+        - l => л
+        - m => м
+        - n => н
+        - o => о
+        - p => п
+        - r => р 
+        - s => с
+        - sh => ш
+        - shch => щ
+        - t => т
+        - ts => ц
+        - u => у
+        - v => в
+        - x => х
+        - y => ы
+        - ya => я
+        - ye => э
+        - yo => ё
+        - yu => ю
+        - z => з
+        - zh => ж
+
+=======================================================================
+6. Known issues                                  *transliterate-issues*
 
 The plugin is slow. Really slow. It's written in pure vim script,
 and vim script is hardly a speed demon. That said, it's fast enough
 for typical usage, just don't try to transliterate a whole big file.
 
 =======================================================================
-6. Todo                                            *transliterate-todo*
+7. Todo                                            *transliterate-todo*
 
  - Support for more Cyrillics
  - And for kanas

@@ -3,7 +3,7 @@
 "
 " File: transliterate.vim
 " Author: Fanael Linithien <fanael4@gmail.com>
-" Version: 0.2.2
+" Version: 0.2.2.1
 " Description: vim plugin that allows transliteration of text
 " License: Copyright (c) 2012, Fanael Linithien
 " All rights reserved.
@@ -96,12 +96,12 @@ let s:ruscyrMode = [
 \ ['\Vu', 'у'], ['\Vt', 'т'], ['\Vs', 'с'], ['\Vr', 'р'],
 \ ['\Vp', 'п'], ['\Vo', 'о'], ['\Vn', 'н'], ['\Vm', 'м'],
 \ ['\Vl', 'л'], ['\Vk', 'к'], ['\Vj', 'й'], ['\Vi', 'и'],
-\ ['\Vh', 'Х'], ['\Vh', 'х'], ['\Vg', 'г'], ['\Vf', 'ф'],
-\ ['\Ve', 'е'], ['\Vd', 'д'], ['\Vb', 'б'], ['\Va', 'а'],
-\ ['\VZ', 'З'], ['\VY', 'Ы'], ['\VX', 'Х'], ['\VV', 'В'],
-\ ['\VU', 'У'], ['\VT', 'Т'], ['\VS', 'С'], ['\VR', 'Р'],
-\ ['\VP', 'П'], ['\VO', 'О'], ['\VN', 'Н'], ['\VM', 'М'],
-\ ['\VL', 'Л'], ['\VK', 'К'], ['\VJ', 'Й'], ['\VI', 'И'],
+\ ['\Vh', 'х'], ['\Vg', 'г'], ['\Vf', 'ф'], ['\Ve', 'е'],
+\ ['\Vd', 'д'], ['\Vb', 'б'], ['\Va', 'а'], ['\VZ', 'З'],
+\ ['\VY', 'Ы'], ['\VX', 'Х'], ['\VV', 'В'], ['\VU', 'У'],
+\ ['\VT', 'Т'], ['\VS', 'С'], ['\VR', 'Р'], ['\VP', 'П'],
+\ ['\VO', 'О'], ['\VN', 'Н'], ['\VM', 'М'], ['\VL', 'Л'],
+\ ['\VK', 'К'], ['\VJ', 'Й'], ['\VI', 'И'], ['\VH', 'Х'],
 \ ['\VG', 'Г'], ['\VF', 'Ф'], ['\VE', 'Е'], ['\VD', 'Д'],
 \ ['\VB', 'Б'], ['\VA', 'А'], ['\V''', 'ь'], ['\V"', 'ъ']
 \]
@@ -129,6 +129,7 @@ function! s:Comparator(a, b)
     return strA <# strB ? 1 : -1
   else
     return 0
+  endif
 endfunction
 
 function! s:TransliteratePrepareModeTable(modeTable)
