@@ -2,7 +2,7 @@
 
 Author: Fanael Linithien <fanael4@gmail.com>
 License: 3-clause BSD license, see transliterate.vim for details
-Version: 0.2.2.1
+Version: 0.2.3
 
 =======================================================================
                                                         *transliterate*
@@ -47,6 +47,7 @@ See |transliterate-builtin-modes| for the list of built-in modes.
 Example: >
         let g:transliterateMode = 'xsampa'
 <
+
                                              *<Plug>TransliterateApply*
 <Plug>TransliterateApply~
 
@@ -58,6 +59,15 @@ Example: >
         nmap <F2> <Plug>TransliterateApply
         vmap <F2> <Plug>TransliterateApply
 <
+
+                                                *:TransliterateSetMode*
+:TransliterateSetMode {modeName}
+
+Set the transliteration mode to {modeName}. This command has the same
+effect as: >
+        let g:transliterateMode='{modeName}'
+<
+See also |g:transliterateMode| and |transliterate-builtin-modes|.
 
                                                *TransliterateAddMode()*
 TransliterateAddMode({modeName}, {modeTable})

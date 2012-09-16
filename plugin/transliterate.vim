@@ -3,7 +3,7 @@
 "
 " File: transliterate.vim
 " Author: Fanael Linithien <fanael4@gmail.com>
-" Version: 0.2.2.1
+" Version: 0.2.3
 " Description: vim plugin that allows transliteration of text
 " License: Copyright (c) 2012, Fanael Linithien
 " All rights reserved.
@@ -159,7 +159,7 @@ function! s:TransliterateWork(text)
   try
     let modeTable = s:modes[g:transliterateMode]
   catch
-    echoerr 'Invalid Transliterate mode (' . g:transliterateMode . '), not doing anything.'
+    echoerr 'Invalid Transliterate mode: ' . g:transliterateMode
   endtry
 
   return s:TransliterateReplace(a:text, modeTable)
@@ -181,6 +181,10 @@ function! <SID>TransliterateOperator(type)
   finally
     let @@ = oldUnnamed
   endtry
+endfunction
+
+function! s:TransliterateModesComplete(lead, line, pos)
+  return join(keys(s:modes), "\n")
 endfunction
 
 " }}}
@@ -213,7 +217,12 @@ function! TransliterateGetModeNames()
   return keys(s:modes)
 endfunction
 
-nnoremap <unique> <Plug>TransliterateApply :set operatorfunc=<SID>TransliterateOperator<CR>g@
-vnoremap <unique> <Plug>TransliterateApply :<C-u>call <SID>TransliterateOperator(visualmode())<CR>
+nnoremap <unique> <Plug>TransliterateApply
+\ :set operatorfunc=<SID>TransliterateOperator<CR>g@
+vnoremap <unique> <Plug>TransliterateApply
+\ :<C-u>call <SID>TransliterateOperator(visualmode())<CR>
+
+command -nargs=1 -complete=custom,<SID>TransliterateModesComplete
+\ TransliterateSetMode let g:transliterateMode=<f-args>
 
 " }}}
